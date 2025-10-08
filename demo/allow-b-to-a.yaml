@@ -1,0 +1,17 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-ns-b-to-app-a
+  namespace: ns-a
+spec:
+  selector:
+    matchLabels:
+      app: app-a
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: ["ns-b"]
+    to:
+    - operation:
+        ports: ["8080"]

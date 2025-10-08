@@ -1,0 +1,18 @@
+apiVersion: maistra.io/v2
+kind: ServiceMeshControlPlane
+metadata:
+  name: basic
+  namespace: istio-system
+spec:
+  version: v2.6
+  security:
+    dataPlane:
+      mtls: true
+      mtlsMode: STRICT
+  tracing:
+    type: Jaeger
+  addons:
+    kiali:
+      enabled: true
+    grafana:
+      enabled: false

@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: call-app-a
+  namespace: ns-b
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: curl
+            image: cgr.dev/chainguard/curl:latest
+            args:
+              - "http://app-a.ns-a.svc.cluster.local:8080/"

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-b
+  namespace: ns-b
+  labels: { app: app-b }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: app-b } }
+  template:
+    metadata: { labels: { app: app-b } }
+    spec:
+      containers:
+      - name: app
+        image: cgr.dev/chainguard/curl:latest
+        command: ["sh","-c"]
+        args:
+          - "while true; do sleep 3600; done"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-b
+  namespace: ns-b
+spec:
+  selector: { app: app-b }
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
