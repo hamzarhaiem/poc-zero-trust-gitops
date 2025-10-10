@@ -1,9 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
-  - ./demo/ns-a.yaml
-  - ./demo/ns-b.yaml
-  - ./demo/app-a.yaml
-  - ./demo/app-b.yaml
-  - ./demo/allow-b-to-a.yaml
-  - ./demo/traffic-generator.yaml
+  - platform/mesh/operators
+  - platform/mesh/controlplane
+  - demo
