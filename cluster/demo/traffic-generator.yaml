@@ -9,6 +9,7 @@ spec:
     spec:
       template:
         spec:
+          serviceAccountName: traffic-sa
           restartPolicy: Never
           containers:
           - name: curl
