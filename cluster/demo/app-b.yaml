@@ -1,31 +1,37 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-b-sa
+  namespace: ns-b
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app-b
   namespace: ns-b
-  labels: { app: app-b }
+  labels:
+    app: app-b
 spec:
   replicas: 1
-  selector: { matchLabels: { app: app-b } }
+  selector:
+    matchLabels:
+      app: app-b
   template:
-    metadata: { labels: { app: app-b } }
+    metadata:
+      labels:
+        app: app-b
+      annotations:
+        # Forcer une réinjection propre au prochain déploiement
+        sidecar.istio.io/inject: "true"
     spec:
       serviceAccountName: app-b-sa
       containers:
-      - name: app
-        image: cgr.dev/chainguard/curl:latest
-        command: ["sh","-c"]
-        args:
-          - "while true; do sleep 3600; done"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: app-b
-  namespace: ns-b
-spec:
-  selector: { app: app-b }
-  ports:
-  - name: http
-    port: 8080
-    targetPort: 8080
+        - name: app
+          image: cgr.dev/chainguard/curl:latest
+          imagePullPolicy: Always
+          command: ["sh","-c"]
+          args:
+            - |
+              while true; do sleep 3600; done
+          # Pas de securityContext ici → on évite les conflits d’UID
+
