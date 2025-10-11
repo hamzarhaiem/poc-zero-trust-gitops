@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: app-b
   namespace: ns-b
-  labels:
-    app: app-b
 spec:
   replicas: 1
   selector:
@@ -16,13 +14,12 @@ spec:
         app: app-b
       annotations:
         sidecar.istio.io/inject: "true"
+        sidecar.istio.io/useCNI: "true"
     spec:
       serviceAccountName: app-b-sa
       containers:
         - name: app
           image: cgr.dev/chainguard/curl:latest
-          imagePullPolicy: Always
           command: ["sh","-c"]
-          args:
-            - |
-              while true; do sleep 3600; done
+          args: ["while true; do sleep 3600; done"]
+

@@ -3,24 +3,13 @@ kind: Namespace
 metadata:
   name: ns-b
   labels:
-    istio-injection: "enabled"
+    istio-injection: enabled
+    # ceinture & bretelles (facultatif, mais utile sur OCP)
+    sidecar.istio.io/useCNI: "true"
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: app-b-sa
   namespace: ns-b
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: allow-anyuid-app-b
-  namespace: ns-b
-subjects:
-  - kind: ServiceAccount
-    name: app-b-sa
-    namespace: ns-b
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: system:openshift:scc:anyuid
+
